@@ -1,0 +1,26 @@
+FC = mpifort
+FFLAGS = 
+SRCS = parameters.f90 mpi_utils.f90 mandelbrot.f90 main.f90 
+OBJS = $(SRCS:.f90=.o)
+EXE = mandelbrot
+
+.PHONY: all build run py clean
+
+all: build run
+
+build: $(EXE)
+
+$(EXE): $(OBJS)
+	$(FC) $(OBJS) -o $(EXE)
+
+%.o: %.f90
+	$(FC) $(FFLAGS) -c $< -o $@
+
+run: $(EXE)
+	mpirun -np $(or $(NP),4) ./$(EXE)
+
+py:
+	python3 $(or $(SCRIPT),plot.py) $(or $(ARGS),)
+
+clean:
+	rm -f $(OBJS) $(EXE) *.mod *.txt
