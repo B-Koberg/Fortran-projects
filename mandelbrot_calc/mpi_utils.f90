@@ -5,47 +5,47 @@ module mpi_utils
     private
     public :: split_arrays, gather_2d
 contains
-    subroutine split_arrays(rank, size, x_pix, x_pix_local, local_nx)
+    subroutine split_arrays(rank, size, y_pix, y_pix_local, local_ny)
         integer, intent(in) :: rank, size
-        integer, intent(in) :: x_pix(nx)
-        integer, intent(out), allocatable :: x_pix_local(:)
-        integer, intent(out) :: local_nx
+        integer, intent(in) :: y_pix(ny)
+        integer, intent(out), allocatable :: y_pix_local(:)
+        integer, intent(out) :: local_ny
 
-        integer :: startx, endx
+        integer :: starty, endy
         integer :: block
 
-        block = nx / size
-        startx = rank*block + 1
-        endx   = (rank+1)*block
-        if (rank == size-1) endx = nx
+        block = ny / size
+        starty = rank*block + 1
+        endy   = (rank+1)*block
+        if (rank == size-1) endy = ny
 
-        if (startx > endx) then
+        if (starty > endy) then
             stop "Error: More processes than work items"
         else
-            local_nx = endx - startx + 1
+            local_ny = endy - starty + 1
         end if
 
-        allocate(x_pix_local(local_nx))
-        x_pix_local = x_pix(startx:endx)
+        allocate(y_pix_local(local_ny))
+        y_pix_local = y_pix(starty:endy)
     end subroutine split_arrays
 
 
-    subroutine gather_2d(local_nx, rank, size, iter_array_local, iter_array, recvcounts, displs)
-        integer, intent(in) :: local_nx, rank, size
-        integer, intent(in) :: iter_array_local(local_nx, ny)
+    subroutine gather_2d(local_ny, rank, size, iter_array_local, iter_array, recvcounts, displs)
+        integer, intent(in) :: local_ny, rank, size
+        integer, intent(in) :: iter_array_local(nx, local_ny)
         integer, intent(out) :: iter_array(nx, ny)
         integer :: recvcounts(:), displs(:)
 
         integer :: p, tmp_start, tmp_end, block
 
-        block = nx / size
+        block = ny / size
 
         do p = 0, size-1
             tmp_start = p*block + 1
             tmp_end   = (p+1)*block
-            if (p == size-1) tmp_end = nx
+            if (p == size-1) tmp_end = ny
 
-            recvcounts(p+1) = (tmp_end - tmp_start + 1) * ny
+            recvcounts(p+1) = (tmp_end - tmp_start + 1) * nx
         end do
 
         displs(1) = 0
@@ -55,7 +55,7 @@ contains
 
 
         call MPI_Gatherv( &
-            iter_array_local, local_nx*ny, MPI_INTEGER, &
+            iter_array_local, nx*local_ny, MPI_INTEGER, &
             iter_array, recvcounts, displs, MPI_INTEGER, &
             0, MPI_COMM_WORLD)
 

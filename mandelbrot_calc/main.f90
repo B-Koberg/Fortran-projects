@@ -7,12 +7,12 @@ program mandelbrot
 
     integer :: rank, size
 
-    integer :: x_pix(nx), y_pix(ny), iter_array(ny, nx)
-    integer, allocatable :: x_pix_local(:), iter_array_local(:,:)
+    integer :: x_pix(nx), y_pix(ny), iter_array(nx, ny)
+    integer, allocatable :: y_pix_local(:), iter_array_local(:,:)
 
     integer :: i, j
 
-    integer :: local_nx
+    integer :: local_ny
 
     integer, allocatable :: recvcounts(:), displs(:)
     integer :: p, tmp_start, tmp_end
@@ -24,13 +24,13 @@ program mandelbrot
     call MPI_Comm_rank(MPI_COMM_WORLD, rank)
     call MPI_Comm_size(MPI_COMM_WORLD, size)
 
-    call split_arrays(rank, size, x_pix, x_pix_local, local_nx)
-    allocate(iter_array_local(ny, local_nx))
+    call split_arrays(rank, size, y_pix, y_pix_local, local_ny)
+    allocate(iter_array_local(nx, local_ny))
 
-    call mandelbrot_set(x_pix_local, y_pix, local_nx, ny, max_iter, iter_array_local)
+    call mandelbrot_set(x_pix, y_pix_local, local_ny, iter_array_local)
 
     allocate(recvcounts(size), displs(size))
-    call gather_2d(local_nx, rank, size, iter_array_local, iter_array, recvcounts, displs)
+    call gather_2d(local_ny, rank, size, iter_array_local, iter_array, recvcounts, displs)
 
 
     call MPI_Finalize()
@@ -44,7 +44,7 @@ contains
     subroutine save_to_txtfile(filename, x_pix, y_pix, iter_array)
         character(len=*), intent(in) :: filename
         integer, intent(in) :: x_pix(nx), y_pix(ny)
-        integer, intent(in) :: iter_array(ny, nx)
+        integer, intent(in) :: iter_array(nx, ny)
 
         integer :: i, j
 
@@ -53,7 +53,7 @@ contains
         ! Jede Zeile der Datei entspricht einer y-Koordinate
         do j = 1, ny
             do i = 1, nx
-                write(10,'(I8,1X)', advance='no') iter_array(j,i)
+                write(10,'(I8,1X)', advance='no') iter_array(i,j)
             end do
             write(10,*)
         end do

@@ -41,19 +41,18 @@ contains
     
     end function iter_calc
 
-    subroutine mandelbrot_set(x_pix_array, y_pix_array, local_nx, ny, max_iter, iter_array)
+    subroutine mandelbrot_set(x_pix_array, y_pix_array, local_ny, iter_array)
         integer, intent(in) :: x_pix_array(:), y_pix_array(:)
-        integer, intent(in) :: max_iter
-        integer, intent(in) :: local_nx, ny
+        integer, intent(in) ::local_ny
 
-        integer, intent(out) :: iter_array(ny, local_nx)
+        integer, intent(out) :: iter_array(nx, local_ny)
 
         integer :: i, j
 
     
         do i = 1, size(x_pix_array)
             do j = 1, size(y_pix_array)
-                iter_array(j,i) = iter_calc(x_pix_array(i), y_pix_array(j))
+                iter_array(i,j) = iter_calc(x_pix_array(i), y_pix_array(j))
             end do
         end do
     end subroutine mandelbrot_set

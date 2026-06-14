@@ -17,7 +17,7 @@ $(EXE): $(OBJS)
 	$(FC) $(FFLAGS) -c $< -o $@
 
 run: $(EXE)
-	mpirun -np $(or $(NP),4) ./$(EXE)
+	mpirun --oversubscribe -np $(or $(NP),8) ./$(EXE)
 
 py:
 	python3 $(or $(SCRIPT),plot.py) $(or $(ARGS),)
