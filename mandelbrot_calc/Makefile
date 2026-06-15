@@ -6,7 +6,7 @@ EXE = mandelbrot
 
 .PHONY: all build run py clean
 
-all: build run clean py 
+all: build run clean py open
 
 build: $(EXE)
 
@@ -27,3 +27,6 @@ clean:
 
 clean_all:
 	rm -f $(OBJS) $(EXE) *.mod *.txt
+
+open:
+	xdg-open mandelbrot_color.png
