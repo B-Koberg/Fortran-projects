@@ -31,7 +31,7 @@ program mandelbrot
 
     if (rank == 0) call print_time(rank, "Begin calculation...")
 
-    call mandelbrot_set(x_pix, y_pix_local, local_ny, iter_array_local, rank)
+    call mandelbrot_set(x_pix, y_pix_local, local_ny, iter_array_local, rank, size)
 
     if (rank == 0) call print_time(rank, "Combining results...")
 
