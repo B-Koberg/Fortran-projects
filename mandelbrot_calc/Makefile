@@ -29,4 +29,10 @@ clean_all:
 	rm -f $(OBJS) $(EXE) *.mod *.txt *.bin
 
 open:
-	xdg-open mandelbrot_color.png
+	@if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open mandelbrot_color.png; \
+	elif command -v explorer.exe >/dev/null 2>&1; then \
+		explorer.exe mandelbrot_color.png; \
+	else \
+		echo "Weder xdg-open noch explorer.exe gefunden."; \
+	fi

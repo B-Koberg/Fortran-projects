@@ -25,7 +25,7 @@ arr_view = mm.reshape((nx, ny), order='F').T  # arr[y,x]
 
 possible_block_h = [ny / i for i in [0.0625, 0.125, 0.25, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
 min_block_h_idx = np.argmin([abs(bh - 4092) for bh in possible_block_h])
-block_h = round(possible_block_h[min_block_h_idx]) + 1 
+block_h = round(possible_block_h[min_block_h_idx]) + 1
 
 print(f"({now_hms()}) Erstelle Bild mit Pixelreihen im Arbeitsspeicher {block_h} von {ny} Pixelreihen insgesamt...")
 img = Image.new("RGB", (nx, ny))
