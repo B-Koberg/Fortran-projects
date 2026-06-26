@@ -44,7 +44,7 @@ program mandelbrot
     
     if (rank == 0) then
         call print_time(rank, "Saving results...")
-        call save_to_binary("mandelbrot_output.bin", iter_array)
+        call save_to_binary("output/mandelbrot_output.bin", iter_array)
     end if
 
 
@@ -56,18 +56,20 @@ contains
 
         integer :: i, j
 
-        open(unit=10, file=filename, status='replace')
+        integer :: unit
 
-        write(10,*) nx, ny, max_iter, x_min, x_max, y_min, y_max
+        open(newunit=unit, file=filename, status='replace')
+
+        write(unit,*) nx, ny, max_iter, x_min, x_max, y_min, y_max
         ! Jede Zeile der Datei entspricht einer y-Koordinate
         do j = 1, ny
             do i = 1, nx
-                write(10,'(I8,1X)', advance='no') iter_array(i,j)
+                write(unit,'(I8,1X)', advance='no') iter_array(i,j)
             end do
-            write(10,*)
+            write(unit,*)
         end do
 
-        close(10)
+        close(unit)
     end subroutine save_to_txtfile
 
     subroutine save_to_binary(filename, iter_array)

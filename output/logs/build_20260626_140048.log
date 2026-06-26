@@ -1,0 +1,41 @@
+=== Build gestartet: 2026-06-26 14:00:48 ===
+ <INFO> BUILD_NAME: build/mpifort
+ <INFO> COMPILER:  mpifort
+ <INFO> C COMPILER:  gcc
+ <INFO> CXX COMPILER: g++
+ <INFO> COMPILER OPTIONS:   -Wall -Wextra -fPIC -fmax-errors=1 -g -fcheck=bounds -fcheck=array-temps -fbacktrace -fcoarray=single -fPIC
+ <INFO> C COMPILER OPTIONS:  
+ <INFO> CXX COMPILER OPTIONS: 
+ <INFO> LINKER OPTIONS:  
+ <INFO> INCLUDE DIRECTORIES:  []
+[100%] Project compiled successfully.
+Project is up to date
+ Rank            1  has          750  rows. From         751 to        1500
+ Rank            2  has          750  rows. From        1501 to        2250
+ Rank            3  has          750  rows. From        2251 to        3000
+[0](14:00:49) Starting Mandelbrot set calculation; Splitting arrays...
+ Rank            0  has          750  rows. From           1 to         750
+[0](14:00:49) Begin calculation...
+[0](14:00:49) Combining results...
+[2](14:00:49) Progress: 10%
+[2](14:00:49) Progress: 20%
+[2](14:00:49) Progress: 30%
+[2](14:00:49) Progress: 40%
+[2](14:00:49) Progress: 50%
+[2](14:00:49) Progress: 60%
+[2](14:00:49) Progress: 70%
+[2](14:00:49) Progress: 80%
+[2](14:00:49) Progress: 90%
+[2](14:00:49) Progress: 100%
+[0](14:00:49) Saving results...
+(14:00:50) Starte Plot-Erstellung...
+(14:00:50) Lese Header und Daten...
+(14:00:50) Erstelle Bild mit Pixelreihen im Arbeitsspeicher 1001 von 3000 Pixelreihen insgesamt...
+(14:00:50) Progress 1001/3000 Pixelreihen verarbeitet...
+(14:00:50) Progress 2002/3000 Pixelreihen verarbeitet...
+(14:00:50) Progress 3000/3000 Pixelreihen verarbeitet...
+(14:00:50) Bild erstellt, speichere und lösche temporäre Daten...
+(14:00:50) Fertig: output/mandelbrot_150.png gespeichert und RAM freigegeben.
+=== Fertig: 2026-06-26 14:00:50 ===
+tail: cannot open 'output/logs/build.log' for reading: No such file or directory
+tail: no files remaining

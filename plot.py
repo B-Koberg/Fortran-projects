@@ -13,7 +13,7 @@ start_time = time.time()
 print(f"({now_hms()}) Starte Plot-Erstellung...")
 
 print(f"({now_hms()}) Lese Header und Daten...")
-fn = "mandelbrot_output.bin"
+fn = "output/mandelbrot_output.bin"
 with open(fn, "rb") as f:
     header = np.fromfile(f, dtype=np.float64, count=7)
 nx, ny = int(header[0]), int(header[1])
@@ -49,8 +49,8 @@ for y0 in range(0, ny, block_h):
     print (f"({now_hms()}) Progress {y1}/{ny} Pixelreihen verarbeitet...")
 
 print(f"({now_hms()}) Bild erstellt, speichere und lösche temporäre Daten...")
-img.save(f"mandelbrot_{max_iter}.png")
+img.save(f"output/mandelbrot_{max_iter}.png")
 del img, arr_view, mm, header
 gc.collect()
-print(f"({now_hms()}) Fertig: mandelbrot_maxiter.png gespeichert und RAM freigegeben.")
+print(f"({now_hms()}) Fertig: output/mandelbrot_{max_iter}.png gespeichert und RAM freigegeben.")
 
