@@ -2,3 +2,5 @@
 *.o
 *.bin
 *.txt
+*.logs
+.logs/

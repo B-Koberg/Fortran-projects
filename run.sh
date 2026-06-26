@@ -12,7 +12,7 @@ LOGFILE="build_${TIMESTAMP}.log"
 
 
 # Voller Pfad zur Logdatei
-LOGPATH="output/logs/${LOGFILE}"
+LOGPATH="output/.logs/${LOGFILE}"
 
 # Alle folgenden Ausgaben in die Logdatei schreiben und gleichzeitig auf der Konsole anzeigen
 exec > >(tee -a "$LOGPATH") 2>&1
@@ -35,4 +35,4 @@ echo "=== Fertig: $(date '+%Y-%m-%d %H:%M:%S') ==="
 
 # Symbolischen Link auf die neueste Logdatei aktualisieren
 # damit für tail -f logs/build.log immer die aktuelle Logdatei angezeigt wird
-ln -sf "$(realpath "$LOGPATH")" "output/logs/build.log"
+ln -sf "$(realpath "$LOGPATH")" "output/.logs/build.log"
