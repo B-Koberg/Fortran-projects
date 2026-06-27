@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# build_and_run.sh - Build, run and log with timestamp
-
-set -euo pipefail
+# Build, run and log with timestamp
 
 # Compiler/Wrapper vor dem Build setzen
 export FPM_FC="mpifort"
@@ -27,16 +25,27 @@ python3 -u gen_params.py
 # Build mit fpm (Verbose)
 fpm build -V
 
+
+days=$((10#$(date +%d) - 10#${TIMESTAMP:6:2}))
+hours=$((10#$(date +%H) - 10#${TIMESTAMP:9:2}))
+minutes=$((10#$(date +%M) - 10#${TIMESTAMP:11:2}))
+seconds=$((10#$(date +%S) - 10#${TIMESTAMP:13:2}))
+
+echo "=== Berechnung Fertig: $(date '+%Y-%m-%d %H:%M:%S'), Dauer: ${days}:${hours}:${minutes}:${seconds} ==="
 # Run mit mpirun
 fpm run --runner "mpirun -np 4"
 
-# Plotten
 python3 -u main.py
 
 # Bild öffnen im Hintergrund
 xdg-open output/mandelbrot.png &
 
-echo "=== Fertig: $(date '+%Y-%m-%d %H:%M:%S') ==="
+days=$((10#$(date +%d) - 10#${TIMESTAMP:6:2}))
+hours=$((10#$(date +%H) - 10#${TIMESTAMP:9:2}))
+minutes=$((10#$(date +%M) - 10#${TIMESTAMP:11:2}))
+seconds=$((10#$(date +%S) - 10#${TIMESTAMP:13:2}))
+
+echo "=== Komplett Fertig: $(date '+%Y-%m-%d %H:%M:%S'), Dauer: ${days}:${hours}:${minutes}:${seconds} ==="
 
 # Symbolischen Link auf die neueste Logdatei aktualisieren
 # damit für tail -f logs/build.log immer die aktuelle Logdatei angezeigt wird

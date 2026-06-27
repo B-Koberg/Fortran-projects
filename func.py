@@ -20,7 +20,6 @@ def find_input_files(pattern: str = "output/mandelbrot_output_*.bin"):
 
 def read_all_infos(files):
     params = json.load(open("params.json", "r"))
-    print(params)
     return params
 
 def build_global_array(params, files):
