@@ -2,7 +2,7 @@ program mandelbrot
     use mpi_f08
     use parameters
     use mandelbrot, only: mandelbrot_set
-    use mpi_utils, only: split_arrays, gather_2d
+    use mpi_utils, only: split_arrays, gather_2d, split_arrays_weighted
     implicit none
 
     integer :: rank, size

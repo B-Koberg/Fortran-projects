@@ -3,7 +3,7 @@ module mpi_utils
     use parameters
     implicit none
     private
-    public :: split_arrays, gather_2d
+    public :: split_arrays, gather_2d, split_arrays_weighted
 contains
     subroutine split_arrays(y_pix, y_pix_local, local_ny, rank, size)
         integer, intent(in) :: rank, size
@@ -28,6 +28,66 @@ contains
         allocate(y_pix_local(local_ny))
         y_pix_local = y_pix(starty:endy)
     end subroutine split_arrays
+
+    subroutine split_arrays_weighted(y_pix, y_pix_local, local_ny, rank, sizee)
+        integer, intent(in) :: rank, sizee !size needs to be different from function size() 
+        integer, intent(in) :: y_pix(:)
+        integer, intent(out), allocatable :: y_pix_local(:)
+        integer, intent(out) :: local_ny
+
+        integer :: i, start_idx, end_idx
+        real :: sum_weights
+        real, allocatable :: weights(:)
+        real :: weight_sum
+        integer :: ny
+        ny = size(y_pix)
+        
+        allocate(weights(ny))
+        ! Beispiel einer quadratischen Gewichtung, größere Werte an den Rändern
+        do i = 1, ny
+            weights(i) = 2.0*(min(i-1, ny - i))**2 + 1.0
+        end do
+        
+        weight_sum = sum(weights)
+        
+        ! Bestimme die Start- und Endindices anhand der gewichteten Verteilung
+        sum_weights = 0.0
+        start_idx = 1
+        end_idx = ny
+        
+        ! Berechne die Anzahl der Pixel für den aktuellen Prozess
+        local_ny = 0
+        do i = 1, ny
+            sum_weights = sum_weights + weights(i)
+            if (sum_weights / weight_sum >= real(rank) / sizee) then
+                start_idx = i + 1
+                exit
+            end if
+        end do
+        
+        sum_weights = 0.0
+        do i = 1, ny
+            sum_weights = sum_weights + weights(i)
+            if (sum_weights / weight_sum >= real(rank + 1) / sizee) then
+                end_idx = i
+                exit
+            end if
+        end do
+        
+        if (rank == 0) start_idx = 1
+        if (rank == sizee - 1) end_idx = ny
+        if (end_idx < start_idx) end_idx = start_idx
+        
+        local_ny = end_idx - start_idx + 1
+        
+        allocate(y_pix_local(local_ny))
+        if (rank == sizee - 1) then
+            y_pix_local = y_pix(start_idx:ny)
+        else
+            y_pix_local = y_pix(start_idx:end_idx)
+        end if
+    end subroutine split_arrays_weighted
+
 
     subroutine gather_2d(iter_array, iter_array_local, local_ny, size)
         integer, intent(in) :: local_ny, size
