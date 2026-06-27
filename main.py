@@ -15,8 +15,8 @@ def main():
     files = find_input_files("output/mandelbrot_output_*.bin")
     print(f"({now_hms()}) Gefundene Dateien: {len(files)}")
 
-    infos = read_all_infos(files)
-    global_arr, nx, ny, max_iter = build_global_array(infos)
+    params = read_all_infos(files)
+    global_arr, nx, ny, max_iter = build_global_array(params, files)
 
     out_path = "output/mandelbrot.png" 
     create_image_from_array(global_arr, nx, ny, max_iter, out_path)

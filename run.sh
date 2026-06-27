@@ -22,6 +22,8 @@ exec > >(tee -a "$LOGPATH") 2>&1
 
 echo "=== Build gestartet: $(date '+%Y-%m-%d %H:%M:%S') ==="
 
+python3 -u gen_params.py
+
 # Build mit fpm (Verbose)
 fpm build -V
 
@@ -32,7 +34,7 @@ fpm run --runner "mpirun -np 4"
 python3 -u main.py
 
 # Bild öffnen im Hintergrund
-xdg-open output/mandelbrot_150.png &
+xdg-open output/mandelbrot.png &
 
 echo "=== Fertig: $(date '+%Y-%m-%d %H:%M:%S') ==="
 

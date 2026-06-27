@@ -14,7 +14,7 @@ program mandelbrot
 
     integer :: local_ny
 
-    character(len=1) :: single_file = 'm'  ! 's' for single file, 'm' for multiple files
+    
 
 
     x_pix = [(i, i = 1, nx)]
@@ -36,7 +36,7 @@ program mandelbrot
     
 
 
-    if (single_file == 's') then
+    if (files == 's') then
         if (rank == 0) call print_time(rank, "Combining results...")
         call gather_2d(iter_array, iter_array_local, local_ny, size)
         if (rank == 0) then
@@ -61,7 +61,7 @@ contains
         open(newunit=unit, file=filename, access="stream", form="unformatted", status="replace")
 
         !vielleicht hdf5 lite variablen mit namen, typsicher
-        write(unit) real(nx,wp), real(ny,wp), real(local_ny,wp),real(max_iter,wp)
+        !write(unit) real(nx,wp), real(ny,wp), real(local_ny,wp),real(max_iter,wp)
 
         ! Array als INTEGER(4)
         write(unit) iter_array
