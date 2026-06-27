@@ -6,5 +6,6 @@
     "max_iter":150,
     "x_min":-2.0,
     "x_max":1.0,
-    "files":"m"
+    "files":"m",
+    "output_png":"output/mandelbrot.png"
 }

@@ -18,7 +18,7 @@ def main():
     params = read_all_infos(files)
     global_arr, nx, ny, max_iter = build_global_array(params, files)
 
-    out_path = "output/mandelbrot.png" 
+    out_path =  params['output_png']
     create_image_from_array(global_arr, nx, ny, max_iter, out_path)
 
     print(f"({now_hms()}) Fertig: {out_path} gespeichert. Dauer: {time.time() - start_time:.2f}s")

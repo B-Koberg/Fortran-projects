@@ -25,6 +25,8 @@ python3 -u gen_params.py
 # Build mit fpm (Verbose)
 fpm build -V
 
+# Run mit mpirun
+fpm run --runner "mpirun -np 4"
 
 days=$((10#$(date +%d) - 10#${TIMESTAMP:6:2}))
 hours=$((10#$(date +%H) - 10#${TIMESTAMP:9:2}))
@@ -32,8 +34,6 @@ minutes=$((10#$(date +%M) - 10#${TIMESTAMP:11:2}))
 seconds=$((10#$(date +%S) - 10#${TIMESTAMP:13:2}))
 
 echo "=== Berechnung Fertig: $(date '+%Y-%m-%d %H:%M:%S'), Dauer: ${days}:${hours}:${minutes}:${seconds} ==="
-# Run mit mpirun
-fpm run --runner "mpirun -np 4"
 
 python3 -u main.py
 

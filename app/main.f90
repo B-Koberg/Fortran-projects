@@ -14,9 +14,6 @@ program mandelbrot
 
     integer :: local_ny
 
-    
-
-
     x_pix = [(i, i = 1, nx)]
     y_pix = [(j, j = 1, ny)]
 
@@ -32,9 +29,6 @@ program mandelbrot
     if (rank == 0) call print_time(rank, "Begin calculation...")
 
     call mandelbrot_set(x_pix, y_pix_local, iter_array_local, local_ny, rank, size)
-
-    
-
 
     if (files == 's') then
         if (rank == 0) call print_time(rank, "Combining results...")
